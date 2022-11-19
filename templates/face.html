@@ -6,13 +6,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- <link rel="stylesheet" href="static/stylesheets/style.css"> -->
+    <link rel="stylesheet" href="static/stylesheets/style.css">
 </head>
 
 <body>
     <div class="stream">
         <h1 class="title">Hello</h1>
-        <img class="video" src="{{url_for('video')}}" width="60%">
+        <div class="vid" style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 5%;
+        border: 2px solid black;
+        /* margin-left: 0%; */
+    ">
+            <img class="video" src="/video" width="50%">
+        </div>
+    </div>
+    <div class="btn">
+        <form action="/name">
+            <input type="submit" , value="Authenticate" , class="auth">
+        </form>
     </div>
 </body>
 

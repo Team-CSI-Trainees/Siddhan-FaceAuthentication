@@ -6,10 +6,13 @@ from flask import Flask, render_template, Response, request
 app = Flask(__name__)
 
 ##########################
-names = set()
 ##########################
 
+
 def gen_frames():
+
+    global name
+    name = "unknown"
 
     video_capture = cv2.VideoCapture(0)
 
@@ -45,8 +48,6 @@ def gen_frames():
     face_names = []
     process_this_frame = True
 
-
-
     while True:
         # Grab a single frame of video
         ret, frame = video_capture.read()
@@ -78,9 +79,6 @@ def gen_frames():
                     name = known_face_names[best_match_index]
 
                 face_names.append(name)
-                
-                
-                names.add(name)
 
         process_this_frame = not process_this_frame
 
@@ -91,9 +89,9 @@ def gen_frames():
             right *= 4
             bottom *= 4
             left *= 4
-            
+
             ####################
-            ######print(names)
+            # print(names)
             ###################
 
             # Draw a box around the face
@@ -111,9 +109,11 @@ def gen_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+            if name == "unknown":
+                continue
+            else:
+                break
 
-# print("Hello World")
-#############print(names)
 
 @app.route('/')
 def index():
@@ -130,12 +130,9 @@ def video():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-
-
-# @app.route('/name')
-# def name():
-#     name = request.args.get("name")
-#     return render_template('name.html', name)
+@app.route('/name')
+def welcome():
+    return render_template('name.html', name=name)
 
 
 if __name__ == '__main__':
